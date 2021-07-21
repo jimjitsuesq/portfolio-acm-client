@@ -42,7 +42,7 @@ const CourseDetail = props => {
 
                         <h3 className="course--detail--title">Materials Needed</h3>
                         <ul className="course--detail--list">
-                            {splitMaterials.map(material => <li>{material}</li>)}
+                            {splitMaterials.map((index, material) => <li key={index}>{material}</li>)}
                         </ul>
                     </div>
                 </div>

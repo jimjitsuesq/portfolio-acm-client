@@ -15,10 +15,11 @@ function App() {
       <main>
           <Switch>
             <Route exact path="/" render={(props) => <GetCourses />} />
+            <Route path="/api/courses/create" component={CreateCourse} />
             <Route path="/api/courses/:id">
               <GetOneCourse />
             </Route>
-            <Route path="/api/courses/create" component={CreateCourse} />
+            
           </Switch>
       </main>
     </>

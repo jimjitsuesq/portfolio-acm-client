@@ -1,7 +1,6 @@
 import axios from 'axios';
 import React from 'react';
-import { useParams, browserHistory } from 'react-router-dom';
-import UpdateCourse from './UpdateCourse';
+import { useParams } from 'react-router-dom';
 
 const CourseDetail = props => {
     let course = props.courseData
@@ -31,7 +30,7 @@ const CourseDetail = props => {
         <div className="actions--bar">
             <div className="wrap">
                 <a className="button" href={`${course.id}/update`}>Update Course</a>
-                <a className="button" onClick={deleteCourse}>Delete Course</a>
+                <button className="button" onClick={deleteCourse}>Delete Course</button>
                 <a className="button button-secondary" href="/">Return to List</a>
             </div>
         </div>

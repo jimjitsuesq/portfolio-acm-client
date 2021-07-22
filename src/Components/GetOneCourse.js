@@ -9,12 +9,13 @@ function GetOneCourse() {
     let { id } = useParams();
     
     useEffect(() => {
-        const fetchCourse = async () => {
+        const FetchCourse = async () => {
+            
             const response = await axios.get(` http://5d574ad5fb43.ngrok.io/api/courses/${id}`);
             getCourse(response.data.course)
             setLoading(false);
         };
-        fetchCourse();
+        FetchCourse();
     }, []);
     if (isLoading) {
         return <div>Loading...</div>

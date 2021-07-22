@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 function UpdateCourse () {
-    const [isLoading, setLoading] =useState(true);
+    const [isLoading, setLoading] = useState(true);
     const [course, getCourse] = useState([]);
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
@@ -14,7 +14,8 @@ function UpdateCourse () {
     let materials = course.materialsNeeded
 
     useEffect(() => {
-        const fetchCourse = async () => {
+        const FetchCourse = async () => {
+            
             const response = await axios.get(` http://5d574ad5fb43.ngrok.io/api/courses/${id}`);
             getCourse(response.data.course)
             setTitle(response.data.course.title)
@@ -23,9 +24,10 @@ function UpdateCourse () {
             setMaterialsNeeded(response.data.course.materialsNeeded)
             setLoading(false);
         };
-        fetchCourse();
+        FetchCourse();
     }, []);
-    const handleSubmit = (e) => {
+    const HandleSubmit = (e) => {
+        let { id } = useParams();
         const course = {
             title,
             description,
@@ -54,7 +56,7 @@ function UpdateCourse () {
                         <li>Please provide a value for "Description"</li>
                     </ul>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={HandleSubmit}>
                     <div className="main--flex">
                         <div>
                             <label htmlFor="courseTitle">Course Title</label>

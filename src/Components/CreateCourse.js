@@ -25,7 +25,7 @@ function CreateCourse () {
             .then(() => {(window.location=`/`)})
             .catch(err => {
                 console.error(err);
-            })
+        })
     };
     return(
         <div className="wrap">

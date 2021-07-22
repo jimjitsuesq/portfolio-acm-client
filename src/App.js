@@ -12,6 +12,7 @@ import CreateCourse from './Components/CreateCourse';
 import UpdateCourse from './Components/UpdateCourse';
 import UserSignUp from './Components/UserSignUp';
 import UserSignIn from './Components/UserSignIn';
+import UserSignOut from './Components/UserSignOut';
 
 axios.defaults.withCredentials = true;
 
@@ -39,6 +40,7 @@ function App() {
             </Route>
             <Route path="/api/signup" component={UserSignUp} />
             <Route path="/api/signin" component={UserSignIn} />
+            <Route path="/api/signout" component={UserSignOut} />
           </Switch>
       </main>
     </>

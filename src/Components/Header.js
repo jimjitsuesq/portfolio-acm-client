@@ -9,7 +9,7 @@ function Header (props) {
                     <nav>
                         <ul className="header--signedin">
                             <li>Welcome, {props.user}!</li>
-                            <li><a href="sign-out.html">Sign Out</a></li>
+                            <li><a href="/api/signout">Sign Out</a></li>
                         </ul>
                     </nav>
                 </div>    

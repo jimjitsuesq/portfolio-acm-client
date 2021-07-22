@@ -7,6 +7,7 @@ import GetCourses from './Components/GetCourses';
 import Header from './Components/Header';
 import GetOneCourse from './Components/GetOneCourse';
 import CreateCourse from './Components/CreateCourse';
+import UpdateCourse from './Components/UpdateCourse';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Switch>
             <Route exact path="/" render={(props) => <GetCourses />} />
             <Route path="/api/courses/create" component={CreateCourse} />
+            <Route path="/api/courses/:id/update" component={UpdateCourse} />
             <Route path="/api/courses/:id">
               <GetOneCourse />
             </Route>

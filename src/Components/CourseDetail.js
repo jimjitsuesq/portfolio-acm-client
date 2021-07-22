@@ -1,13 +1,14 @@
 import axios from 'axios';
 import React from 'react';
 import { useParams, browserHistory } from 'react-router-dom';
+import UpdateCourse from './UpdateCourse';
 
 const CourseDetail = props => {
     let course = props.courseData
     let materials = course.materialsNeeded
     let splitMaterials;
     let { id } = useParams();
-    console.log(id)
+    
     function splitter () {
         if(materials) {
             splitMaterials = course.materialsNeeded.split('*')
@@ -16,7 +17,6 @@ const CourseDetail = props => {
         }
     }
     splitter()
-    console.log(course)
     const deleteCourse = () => {
         axios
             .delete(`http://localhost:5000/api/courses/${id}`)
@@ -24,7 +24,6 @@ const CourseDetail = props => {
             .then(() => {(window.location='/')})
             .catch(err => {
                 console.error(err)
-            // .finally(window.location='/')
             })
     }
     return (
@@ -55,7 +54,7 @@ const CourseDetail = props => {
 
                         <h3 className="course--detail--title">Materials Needed</h3>
                         <ul className="course--detail--list">
-                            {splitMaterials.map((index, material) => <li key={index}>{material}</li>)}
+                            {splitMaterials.slice(1).map((material, index) => <li key={index}>{material}</li>)}
                         </ul>
                     </div>
                 </div>

@@ -14,7 +14,12 @@ function UserSignIn () {
         e.preventDefault();
         // setSubmitted(true);
         axios
-            .post('http://localhost:5000/api/users', user)
+            .get('http://localhost:5000/api/users', {
+                auth: {
+                    username: user.emailAddress,
+                    password: user.password
+                }
+            })
             .then(() => console.log('User Signed In'))
             .then(() => {(window.location=`/`)})
             .catch(err => {

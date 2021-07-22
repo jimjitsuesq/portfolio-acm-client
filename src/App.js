@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Route,
   Switch
 } from 'react-router-dom';
+import axios from 'axios';
+
 import GetCourses from './Components/GetCourses';
 import Header from './Components/Header';
 import GetOneCourse from './Components/GetOneCourse';
@@ -11,10 +13,22 @@ import UpdateCourse from './Components/UpdateCourse';
 import UserSignUp from './Components/UserSignUp';
 import UserSignIn from './Components/UserSignIn';
 
+axios.defaults.withCredentials = true;
+
 function App() {
+  const[user, setUser] = useState(null);
+
+  useEffect(() => {
+    const checkUser = () => {
+      if(document.cookie) {
+        setUser(document.cookie.split('=')[1])
+      }    
+    }
+  checkUser();
+  });
   return (
     <>
-      <Header />
+      <Header user={user} />
       <main>
           <Switch>
             <Route exact path="/" render={(props) => <GetCourses />} />

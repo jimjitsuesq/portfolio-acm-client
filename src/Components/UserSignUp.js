@@ -16,7 +16,7 @@ function UserSignUp () {
             password
         }
         console.log(user)
-        // e.preventDefault();
+        e.preventDefault();
         // setSubmitted(true);
         axios
             .post('http://localhost:5000/api/users', user)

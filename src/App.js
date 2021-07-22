@@ -9,6 +9,7 @@ import GetOneCourse from './Components/GetOneCourse';
 import CreateCourse from './Components/CreateCourse';
 import UpdateCourse from './Components/UpdateCourse';
 import UserSignUp from './Components/UserSignUp';
+import UserSignIn from './Components/UserSignIn';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <GetOneCourse />
             </Route>
             <Route path="/api/signup" component={UserSignUp} />
+            <Route path="/api/signin" component={UserSignIn} />
           </Switch>
       </main>
     </>

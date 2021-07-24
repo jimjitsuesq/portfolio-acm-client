@@ -1,14 +1,12 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
-const PrivateRoute = ({Component, ...rest}) => {
-    // console.log(props.isLoggedIn)
+const PrivateRoute = ({component: Component, props, ...rest}) => {
     if (document.cookie.includes('user')) {
         return (
-            <Route {...rest} render={props => (
-                
-                   <Component {...props} />
-            )} />
+            <Route {...rest}>
+                <Component {...props}/>
+            </Route>
         )
     } else {
         return (
@@ -17,5 +15,6 @@ const PrivateRoute = ({Component, ...rest}) => {
             <Redirect to="/api/signin" /> 
         )
     }
-};
+}
+
 export default PrivateRoute;

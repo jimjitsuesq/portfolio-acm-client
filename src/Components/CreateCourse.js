@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function CreateCourse () {
+function CreateCourse (props) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [estimatedTime, setEstimatedTime] = useState('')
     const [materialsNeeded, setMaterialsNeeded] = useState('')
     const userId = 1;
-    
+    console.log(props.isLoggedIn)
     const handleSubmit = (e) => {
         const course = {
             title,
@@ -47,7 +47,7 @@ function CreateCourse () {
                                 value={title}
                                 onChange={e => setTitle(e.target.value)} 
                             />
-                            <p>By USER</p>
+                            <p>By {props.userData.firstName + ' ' + props.userData.lastName} </p>
 
                             <label htmlFor="courseDescription">Course Description</label>
                             <textarea 

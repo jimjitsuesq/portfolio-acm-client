@@ -4,13 +4,13 @@ import { useParams } from 'react-router-dom';
 
 function UpdateCourse (props) {
     const [isLoading, setLoading] = useState(true);
+    const [thisCourseUserId, setThisCourseUserId] = useState();
     const [course, getCourse] = useState([]);
-    const [title, setTitle] = useState('')
+    const [title, setTitle] = useState('');
     const [description, setDescription] = useState('')
     const [estimatedTime, setEstimatedTime] = useState('')
     const [materialsNeeded, setMaterialsNeeded] = useState('')
     let { id } = useParams();
-    const userId = 1;
     let materials = course.materialsNeeded
 
     useEffect(() => {
@@ -18,6 +18,7 @@ function UpdateCourse (props) {
             
             const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
             getCourse(response.data.course)
+            setThisCourseUserId(response.data.course.User.id)
             setTitle(response.data.course.title)
             setDescription(response.data.course.description)
             setEstimatedTime(response.data.course.estimatedTime)
@@ -33,11 +34,10 @@ function UpdateCourse (props) {
             description,
             estimatedTime,
             materialsNeeded,
-            userId
+            thisCourseUserId
         }
         console.log(course)
         e.preventDefault();
-        // setSubmitted(true);
         axios
             .put(`http://localhost:5000/api/courses/${id}`, course)
             .then(() => console.log('Course Updated'))
@@ -68,7 +68,7 @@ function UpdateCourse (props) {
                                 value={title}
                                 onChange={e => setTitle(e.target.value)} 
                             />
-                            <p>By USER</p>
+                            <p>By {props.userData.firstName + ' ' + props.userData.lastName} </p>
 
                             <label htmlFor="courseDescription">Course Description</label>
                             <textarea 

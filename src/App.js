@@ -65,13 +65,13 @@ function App() {
   
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header isLoggedIn={isLoggedIn} userName={userName} />
         <main>
             <Switch>
               <Route exact path="/" render={(props) => <GetCourses />} />
-              <PrivateRoute exact path="/api/courses/create" component={CreateCourse} />
-              <PrivateRoute path="/api/courses/:id/update" component={UpdateCourse} />
-              <Route path="/api/courses/:id" isLoggedIn={isLoggedIn} component={CourseDetail} />
+              <PrivateRoute path="/api/courses/create" props={{isLoggedIn:isLoggedIn, userData:userData}} component={CreateCourse} />
+              <PrivateRoute path="/api/courses/:id/update" props={{isLoggedIn:isLoggedIn, userData:userData}} component={UpdateCourse} />
+              <Route path="/api/courses/:id"  render={(props) => <CourseDetail isLoggedIn={isLoggedIn} userId = {userId} />} />
               <Route path="/api/signup" component={UserSignUp} />
               <Route path="/api/signin" render={(props) => <UserSignIn emailAddress={emailAddress} password={password} setEmailAddress={setEmailAddress} setPassword={setPassword} setIsLoggedIn={setIsLoggedIn} userData={userData} setUserData={setUserData} onSubmit={SignIn}/>} />
               {/* <Route path="/api/signin" render={(props) => <UserSignIn />} /> */}

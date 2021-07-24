@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-function UpdateCourse () {
+function UpdateCourse (props) {
     const [isLoading, setLoading] = useState(true);
     const [course, getCourse] = useState([]);
     const [title, setTitle] = useState('')
@@ -16,7 +16,7 @@ function UpdateCourse () {
     useEffect(() => {
         const FetchCourse = async () => {
             
-            const response = await axios.get(` http://5d574ad5fb43.ngrok.io/api/courses/${id}`);
+            const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
             getCourse(response.data.course)
             setTitle(response.data.course.title)
             setDescription(response.data.course.description)

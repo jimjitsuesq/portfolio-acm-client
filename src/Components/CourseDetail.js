@@ -1,9 +1,10 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const CourseDetail = props => {
-    let course = props.courseData
+    const [isLoading, setLoading] = useState(true);
+    const [course, getCourse] = useState([]);
     let materials = course.materialsNeeded
     let splitMaterials;
     let { id } = useParams();
@@ -24,7 +25,18 @@ const CourseDetail = props => {
             .catch(err => {
                 console.error(err)
             })
-    }
+    }   
+    useEffect(() => {
+        const FetchCourse = async () => {        
+            const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
+            getCourse(response.data.course)
+            setLoading(false);
+        };
+        FetchCourse();
+        }, []);
+    if (isLoading) {
+        return <div>Loading...</div>
+    } else {
     return (
         <>
         <div className="actions--bar">
@@ -61,6 +73,7 @@ const CourseDetail = props => {
         </div>
         </>
     )
+    }
 }
 
 export default CourseDetail;

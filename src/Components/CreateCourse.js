@@ -18,7 +18,6 @@ function CreateCourse () {
         }
         console.log(course)
         e.preventDefault();
-        // setSubmitted(true);
         axios
             .post('http://localhost:5000/api/courses', course)
             .then(() => console.log('Course Created'))

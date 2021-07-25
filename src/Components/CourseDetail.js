@@ -49,7 +49,7 @@ const CourseDetail = (props) => {
         }, []);
     if (noCourse===true) {
         console.log('SO?')
-        return <Redirect to="/NotFound" />
+        return <Redirect to="/notfound" />
     } else {
         if (isLoading) {
             return <div>Loading...</div>

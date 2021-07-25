@@ -12,6 +12,7 @@ import UpdateCourse from './Components/UpdateCourse';
 import PrivateRoute from './Components/PrivateRoute';
 import CourseDetail from './Components/CourseDetail';
 import NotFound from './Components/NotFound';
+import Forbidden from './Components/Forbidden';
 
 axios.defaults.withCredentials = true;
 
@@ -76,8 +77,9 @@ function App() {
               <Route path="/api/signup" component={UserSignUp} />
               <Route path="/api/signin" render={(props) => <UserSignIn emailAddress={emailAddress} password={password} setEmailAddress={setEmailAddress} setPassword={setPassword} setIsLoggedIn={setIsLoggedIn} userData={userData} setUserData={setUserData} onSubmit={SignIn}/>} />
               <Route path="/api/signout" component={UserSignOut} />
+              <Route path="/api/forbidden" component={Forbidden} />
               <Route>
-                <NotFound />
+                <NotFound path="api/notfound" component={NotFound}/>
               </Route>
             </Switch>
         </main>

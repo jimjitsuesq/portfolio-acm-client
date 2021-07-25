@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 function UpdateCourse (props) {
     const [isLoading, setLoading] = useState(true);
@@ -12,8 +12,31 @@ function UpdateCourse (props) {
     const [materialsNeeded, setMaterialsNeeded] = useState('')
     let { id } = useParams();
     let materials = course.materialsNeeded
+    let history = useHistory()
 
-    useEffect(() => {
+    const HandleSubmit = (e) => {
+        console.log(id)
+        const course = {
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded,
+            thisCourseUserId
+        }
+        console.log(course)
+        e.preventDefault();
+            axios.put(`http://localhost:5000/api/courses/${id}`, course, {
+                auth: {
+                    username: props.userData.emailAddress,
+                    password: props.userData.password
+                }   
+            })
+            console.log('Course Updated')
+            // history.push('/')
+        
+            // console.log(error);
+    }
+    /* useEffect(() => {
         const FetchCourse = async () => {
             
             const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
@@ -26,26 +49,7 @@ function UpdateCourse (props) {
             setLoading(false);
         };
         FetchCourse();
-    }, []);
-    const HandleSubmit = (e) => {
-        let { id } = useParams();
-        const course = {
-            title,
-            description,
-            estimatedTime,
-            materialsNeeded,
-            thisCourseUserId
-        }
-        console.log(course)
-        e.preventDefault();
-        axios
-            .put(`http://localhost:5000/api/courses/${id}`, course)
-            .then(() => console.log('Course Updated'))
-            .then(() => {(window.location=`/api/courses/${id}`)})
-            .catch(err => {
-                console.error(err);
-            })
-    };
+    }, []); */
     return(
         <div className="wrap">
                 <h2>Update Course</h2>
@@ -100,7 +104,7 @@ function UpdateCourse (props) {
                             </textarea>
                         </div>
                     </div>
-                    <button className="button" type="submit">Update Course</button><button className="button button-secondary"><a href={`/api/courses/${course.id}`}>Cancel</a></button>
+                    <button className="button" type="submit" onClick={HandleSubmit}>Update Course</button><button className="button button-secondary"><a href={`/api/courses/${course.id}`}>Cancel</a></button>
                 </form>
             </div>
     )

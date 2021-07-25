@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router';
 
 function CreateCourse (props) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [estimatedTime, setEstimatedTime] = useState('')
     const [materialsNeeded, setMaterialsNeeded] = useState('')
-    const userId = 1;
-    console.log(props.isLoggedIn)
-    const handleSubmit = (e) => {
+    const [userId, setUserId] = useState()
+    const [emailAddress, setEmailAddress] = useState('');
+    const [password, setPassword] = useState('');
+    const cookieValue = document.cookie.split('=')[1]
+    let history = useHistory()
+    const loggedInUser = localStorage.getItem('userInfo')
+    const foundUser = JSON.parse(loggedInUser);
+        
+    useEffect(() => {
+        setUserId(foundUser.id);
+        setEmailAddress(foundUser.emailAddress);
+        setPassword(foundUser.password)
+    }, [])
+    const handleSubmit = async (e) => {
         const course = {
             title,
             description,
@@ -18,13 +30,24 @@ function CreateCourse (props) {
         }
         console.log(course)
         e.preventDefault();
-        axios
-            .post('http://localhost:5000/api/courses', course)
-            .then(() => console.log('Course Created'))
-            .then(() => {(window.location=`/`)})
-            .catch(err => {
-                console.error(err);
-        })
+        console.log(emailAddress)
+        console.log(password)
+        // console.log(props.userData.password)
+        // console.log(JSON.stringify(password))
+        // console.log(cookieValue)
+        // console.log(foundUser.password)
+        try {
+            await axios.post('http://localhost:5000/api/courses', course, {
+                auth: {
+                    username: emailAddress,
+                    password: password
+                }
+            })
+            console.log('Course Created')
+            history.push('/')
+        } catch(error) {
+            console.log(error);
+        }
     };
     return(
         <div className="wrap">

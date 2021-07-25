@@ -41,7 +41,7 @@ function App() {
         setUserId(foundUser.id);
         setUserName(foundUser.firstName + ' ' + foundUser.lastName);
         setEmailAddress(foundUser.emailAddress);
-        setPassword(cookieValue)
+        setPassword(response.data.authenticatedUser.password)
         console.log('User Signed In')
         setIsLoggedIn(true)
         history.push('/')
@@ -58,7 +58,7 @@ function App() {
         setUserId(foundUser.id);
         setUserName(foundUser.firstName + ' ' + foundUser.lastName);
         setEmailAddress(foundUser.emailAddress);
-        setPassword(cookieValue)
+        setPassword(userData.password)
         setIsLoggedIn(true)
       }    
   }, [])

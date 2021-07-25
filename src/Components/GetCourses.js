@@ -8,7 +8,7 @@ function GetCourses() {
         fetchCourses()
     }, []);
     const fetchCourses = () => {
-        axios.get(' http://5d574ad5fb43.ngrok.io/api/courses')
+        axios.get('http://localhost:5000/api/courses')
             .then((response) => {
                 const allCourses = response.data.courses
                 getCourses(allCourses)

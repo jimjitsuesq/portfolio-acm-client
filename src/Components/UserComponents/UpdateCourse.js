@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Redirect, useHistory } from 'react-router-dom';
-import ValidationErrors from './ValidationErrors';
+import ValidationErrors from '../ErrorComponents/ValidationErrors';
 
 function UpdateCourse (props) {
     const [isLoading, setLoading] = useState(true);

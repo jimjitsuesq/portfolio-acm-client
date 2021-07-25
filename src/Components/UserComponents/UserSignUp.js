@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import ValidationErrors from './ValidationErrors';
+import ValidationErrors from '../ErrorComponents/ValidationErrors';
 
 function UserSignUp () {
     const [firstName, setFirstName] = useState('')

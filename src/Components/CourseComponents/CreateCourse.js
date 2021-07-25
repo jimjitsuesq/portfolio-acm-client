@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
-import ValidationErrors from './ValidationErrors';
+import ValidationErrors from '../ErrorComponents/ValidationErrors';
 
 function CreateCourse (props) {
     const [title, setTitle] = useState('')

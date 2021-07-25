@@ -31,6 +31,7 @@ const CourseDetail = (props) => {
             setLoading(false)
         } catch (error) {
             setNoCourse(true)
+            console.log(error)
         }
     }
     useEffect(() => {

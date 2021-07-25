@@ -1,23 +1,17 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import { render } from 'react-dom'
 
 const CourseDetail = (props) => {
     const [isLoading, setLoading] = useState(true);
     const [course, getCourse] = useState([]);
+    const [materials, getMaterials] = useState();
+    const [materialsList, setMaterialsList] = useState()
     const [thisCourseUserId, setThisCourseUserId] = useState();
-    let materials = course.materialsNeeded
-    let splitMaterials;
     let { id } = useParams();
     
-    function splitter () {
-        if(materials) {
-            splitMaterials = course.materialsNeeded.split('*')
-        } else {
-            splitMaterials = [ 'None']
-        }
-    }
-    splitter()
     const deleteCourse = () => {
         axios
             .delete(`http://localhost:5000/api/courses/${id}`)
@@ -32,9 +26,21 @@ const CourseDetail = (props) => {
             const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
             getCourse(response.data.course)
             setThisCourseUserId(response.data.course.User.id)
+            getMaterials(response.data.course.materialsNeeded)
             setLoading(false);
-        };
+        }
+        function splitter () {
+            let allMaterialsList
+            if(materials) {
+                const splitMaterials = materials.split('*')
+                allMaterialsList = splitMaterials.slice(1).map((material, index) => <li key={index}>{material}</li>)
+            } else {
+                allMaterialsList = 'None'
+            }
+            setMaterialsList(allMaterialsList)
+        }
         FetchCourse();
+        splitter()
         }, []);
     if (isLoading) {
         return <div>Loading...</div>
@@ -60,19 +66,14 @@ const CourseDetail = (props) => {
                         <h3 className="course--detail--title">Course</h3>
                         <h4 className="course--name">{course.title}</h4>
                         <p>By {course.User.firstName} {course.User.lastName}</p>
-
-                        <p>{course.description}</p>
+                        <ReactMarkdown>{course.description}</ReactMarkdown>
                     </div>
-                
-            
                     <div>
                         <h3 className="course--detail--title">Estimated Time</h3>
                         <p>{course.estimatedTime}</p>
 
                         <h3 className="course--detail--title">Materials Needed</h3>
-                        <ul className="course--detail--list">
-                            {splitMaterials.slice(1).map((material, index) => <li key={index}>{material}</li>)}
-                        </ul>
+                            <ReactMarkdown className="course--detail--list">{materials}</ReactMarkdown>
                     </div>
                 </div>
             </form>

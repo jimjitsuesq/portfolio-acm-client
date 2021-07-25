@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useHistory } from 'react-router-dom';
+import ValidationErrors from './ValidationErrors';
 
 function UpdateCourse (props) {
     const [isLoading, setLoading] = useState(true);
@@ -10,11 +11,12 @@ function UpdateCourse (props) {
     const [description, setDescription] = useState('')
     const [estimatedTime, setEstimatedTime] = useState('')
     const [materialsNeeded, setMaterialsNeeded] = useState('')
+    const [validationErrors, setValidationErrors] = useState([])
     let { id } = useParams();
     let materials = course.materialsNeeded
     let history = useHistory()
 
-    const HandleSubmit = (e) => {
+    const HandleSubmit = async (e) => {
         console.log(id)
         const course = {
             title,
@@ -25,18 +27,22 @@ function UpdateCourse (props) {
         }
         console.log(course)
         e.preventDefault();
-            axios.put(`http://localhost:5000/api/courses/${id}`, course, {
+        try {
+            const response = await axios.put(`http://localhost:5000/api/courses/${id}`, course, {
                 auth: {
                     username: props.userData.emailAddress,
                     password: props.userData.password
                 }   
             })
+            console.log((await response).data.errors)
             console.log('Course Updated')
-            // history.push('/')
-        
-            // console.log(error);
+            history.push('/')
+        } catch(error) {
+            console.log(error.response.data.errors);
+            setValidationErrors(error.response.data.errors)
+        }
     }
-    /* useEffect(() => {
+    useEffect(() => {
         const FetchCourse = async () => {
             
             const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
@@ -49,17 +55,11 @@ function UpdateCourse (props) {
             setLoading(false);
         };
         FetchCourse();
-    }, []); */
+    }, []);
     return(
         <div className="wrap">
                 <h2>Update Course</h2>
-                <div className="validation--errors">
-                    <h3>Validation Errors</h3>
-                    <ul>
-                        <li>Please provide a value for "Title"</li>
-                        <li>Please provide a value for "Description"</li>
-                    </ul>
-                </div>
+                    {(validationErrors.length > 0) && <ValidationErrors validationErrors={validationErrors}/>}
                 <form onSubmit={HandleSubmit}>
                     <div className="main--flex">
                         <div>

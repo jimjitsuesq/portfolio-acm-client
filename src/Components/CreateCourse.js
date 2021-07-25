@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
+import ValidationErrors from './ValidationErrors';
 
 function CreateCourse (props) {
     const [title, setTitle] = useState('')
@@ -10,6 +11,7 @@ function CreateCourse (props) {
     const [userId, setUserId] = useState()
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
+    const [validationErrors, setValidationErrors] = useState([])
     const cookieValue = document.cookie.split('=')[1]
     let history = useHistory()
     const loggedInUser = localStorage.getItem('userInfo')
@@ -37,7 +39,7 @@ function CreateCourse (props) {
         // console.log(cookieValue)
         // console.log(foundUser.password)
         try {
-            await axios.post('http://localhost:5000/api/courses', course, {
+            const response = await axios.post('http://localhost:5000/api/courses', course, {
                 auth: {
                     username: emailAddress,
                     password: password
@@ -47,18 +49,13 @@ function CreateCourse (props) {
             history.push('/')
         } catch(error) {
             console.log(error);
+            setValidationErrors(error.response.data.errors)
         }
     };
     return(
         <div className="wrap">
                 <h2>Create Course</h2>
-                <div className="validation--errors">
-                    <h3>Validation Errors</h3>
-                    <ul>
-                        <li>Please provide a value for "Title"</li>
-                        <li>Please provide a value for "Description"</li>
-                    </ul>
-                </div>
+                    {(validationErrors.length > 0) && <ValidationErrors validationErrors={validationErrors}/>}
                 <form onSubmit={handleSubmit}>
                     <div className="main--flex">
                         <div>

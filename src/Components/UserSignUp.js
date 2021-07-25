@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import ValidationErrors from './ValidationErrors';
 
 function UserSignUp () {
     const [firstName, setFirstName] = useState('')
@@ -7,8 +9,10 @@ function UserSignUp () {
     const [emailAddress, setEmailAddress] = useState('')
     const [password, setPassword] = useState('')
     const [confirmedPassword, setConfirmedPassword] = useState('')
+    const [validationErrors, setValidationErrors] = useState([])
+    let history = useHistory()
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         const user = {
             firstName,
             lastName,
@@ -17,19 +21,19 @@ function UserSignUp () {
         }
         console.log(user)
         e.preventDefault();
-        // setSubmitted(true);
-        axios
-            .post('http://localhost:5000/api/users', user)
-            .then(() => console.log('User Created'))
-            .then(() => {(window.location=`/`)})
-            .catch(err => {
-                console.error(err);
-        })
+        try {
+            const response = await axios.post('http://localhost:5000/api/users', user)
+            console.log('User Created')
+            history.push('/')
+        } catch(error) {
+            console.log(error.response.data.errors);
+            setValidationErrors(error.response.data.errors)
+        }
     };
     return (
         <div className="form--centered">
                     <h2>Sign Up</h2>
-                    
+                        {(validationErrors.length > 0) && <ValidationErrors validationErrors={validationErrors}/>}
                     <form onSubmit={handleSubmit}>
                       <div>
                         <label htmlFor="firstName">First Name</label>
@@ -63,14 +67,6 @@ function UserSignUp () {
                             type="password" 
                             value={password}
                             onChange={e => setPassword(e.target.value)} 
-                        />
-                        <label htmlFor="confirmPassword">Confirm Password</label>
-                        <input 
-                            id="confirmPassword" 
-                            name="confirmPassword" 
-                            type="password" 
-                            value={confirmedPassword}
-                            onChange={e => setConfirmedPassword(e.target.value)}  
                         />
                         <button className="button" type="submit">Sign Up</button><button className="button button-secondary"> <a href='/'>Cancel</a></button>
                       </div>

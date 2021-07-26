@@ -13,6 +13,6 @@ const ValidationErrors = (props) => {
             </div>
         </>
     );
-  }
+}
 
 export default ValidationErrors;

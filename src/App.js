@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 
 import Courses from './Components/CourseComponents/Courses';
@@ -9,7 +9,7 @@ import UserSignIn from './Components/UserComponents/UserSignIn';
 import UserSignOut from './Components/UserComponents/UserSignOut';
 import CreateCourse from './Components/CourseComponents/CreateCourse';
 import UpdateCourse from './Components/CourseComponents/UpdateCourse';
-import PrivateRoute from './Components/PrivateRoute';
+import PrivateRoute from './Components/RouteComponents/PrivateRoute';
 import CourseDetail from './Components/CourseComponents/CourseDetail';
 import NotFound from './Components/ErrorComponents/NotFound';
 import Forbidden from './Components/ErrorComponents/Forbidden';
@@ -20,64 +20,22 @@ axios.defaults.withCredentials = true;
 function App() {
   const [userData, setUserData] = useState('');
   const [userId, setUserId] = useState();
-  const [userName, setUserName] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
-  const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [validationErrors, setValidationErrors] = useState([])
-  const [error500Status, setError500Status] = useState(false)
-  
-  const cookieValue = document.cookie.split('=')[1]
-  let history = useHistory()
-  async function SignIn () {
-    try {
-        const response = await axios.get('http://localhost:5000/api/users', {
-            auth: {
-                username: emailAddress,
-                password: password
-            }
-        })
-        const responseJSON = JSON.stringify(response.data.authenticatedUser)
-        localStorage.setItem('userInfo', responseJSON)
-        const loggedInUser = localStorage.getItem('userInfo')
-        const foundUser = JSON.parse(loggedInUser);
-        setUserData(foundUser);
-        setUserId(foundUser.id);
-        setUserName(foundUser.firstName + ' ' + foundUser.lastName);
-        setEmailAddress(foundUser.emailAddress);
-        setPassword(response.data.authenticatedUser.password)
-        console.log('User Signed In')
-        setIsLoggedIn(true)
-        history.push('/')
-    } catch(error) {
-        if(error.response.status === 500) {
-            setError500Status(true)
-        } else {
-            if(error.response.status === 400) {
-                setValidationErrors(error.response.data.errors) 
-            } else {
-            console.log(error);
-            }
-        }
-    }
-  }
 
   useEffect(() => {
+    if(localStorage.getItem('userInfo')) {
     const loggedInUser = localStorage.getItem('userInfo')
       if(loggedInUser) {
         const foundUser = JSON.parse(loggedInUser);
         setUserData(foundUser);
         setUserId(foundUser.id);
-        setUserName(foundUser.firstName + ' ' + foundUser.lastName);
-        setEmailAddress(foundUser.emailAddress);
-        setPassword(userData.password)
         setIsLoggedIn(true)
       }    
-  }, [])
+  }}, [])
   
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} userName={userName} />
+      <Header props={{isLoggedIn: isLoggedIn, userData: userData}} />
         <main>
             <Switch>
               <Route 
@@ -85,57 +43,51 @@ function App() {
                 render={(props) => <Courses />} 
               />
               <PrivateRoute 
-                path="/api/courses/create" 
-                props={{isLoggedIn:isLoggedIn, userData:userData}} 
+                path="/courses/create" 
+                props={{userData:userData}} 
                 component={CreateCourse} 
               />
               <PrivateRoute 
-                path="/api/courses/:id/update" 
-                props={{isLoggedIn:isLoggedIn, userData:userData}} 
+                path="/courses/:id/update" 
+                props={{userData:userData}} 
                 component={UpdateCourse} 
               />
               <Route 
-                path="/api/courses/:id"  
+                path="/courses/:id"  
                 render={(props) =>  <CourseDetail 
-                                      isLoggedIn={isLoggedIn} 
                                       userId={userId}
                                       userData={userData}
                                     />
                 } 
               />
               <Route 
-                path="/api/signup" 
-                component={UserSignUp} 
-              />
-              <Route 
-                path="/api/signin" 
+                path="/signin" 
                 render={(props) =>  <UserSignIn 
-                                      emailAddress={emailAddress} 
-                                      password={password} 
-                                      setEmailAddress={setEmailAddress} 
-                                      setPassword={setPassword} 
                                       setIsLoggedIn={setIsLoggedIn} 
-                                      userData={userData} 
                                       setUserData={setUserData} 
-                                      onSubmit={SignIn}
+                                      {...props} 
                                     />
                 } 
               />
               <Route 
-                path="/api/signout" 
+                path="/signup" 
+                component={UserSignUp} 
+              />
+              <Route 
+                path="/signout" 
                 component={UserSignOut} 
               />
               <Route 
-                path="/api/forbidden" 
+                path="/forbidden" 
                 component={Forbidden} 
               />
               <Route 
-                path="/api/error" 
+                path="/error" 
                 component={UnhandledError} 
               />
               <Route>
                 <NotFound 
-                  path="api/notfound" 
+                  path="/notfound" 
                   component={NotFound}
                 />
               </Route>

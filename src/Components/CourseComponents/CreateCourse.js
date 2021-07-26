@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory, Redirect } from 'react-router';
 import ValidationErrors from '../ErrorComponents/ValidationErrors';
@@ -8,22 +8,14 @@ function CreateCourse (props) {
     const [description, setDescription] = useState('')
     const [estimatedTime, setEstimatedTime] = useState('')
     const [materialsNeeded, setMaterialsNeeded] = useState('')
-    const [userId, setUserId] = useState()
-    const [emailAddress, setEmailAddress] = useState('');
-    const [password, setPassword] = useState('');
+    const [userId, setUserId] = useState(0)
     const [validationErrors, setValidationErrors] = useState([]);
     const [error500Status, setError500Status] = useState(false);
-    const cookieValue = document.cookie.split('=')[1]
     let history = useHistory()
-    const loggedInUser = localStorage.getItem('userInfo')
-    const foundUser = JSON.parse(loggedInUser);
-        
-    useEffect(() => {
-        setUserId(foundUser.id);
-        setEmailAddress(foundUser.emailAddress);
-        setPassword(foundUser.password)
-    }, [])
-    
+    if(userId === 0) {
+        setUserId(props.userData.id)
+    }
+
     const handleSubmit = async (e) => {
         const course = {
             title,
@@ -32,24 +24,17 @@ function CreateCourse (props) {
             materialsNeeded,
             userId
         }
-        console.log(course)
         e.preventDefault();
-        console.log(emailAddress)
-        console.log(password)
-        // console.log(props.userData.password)
-        // console.log(JSON.stringify(password))
-        // console.log(cookieValue)
-        // console.log(foundUser.password)
         try {
-            const response = await axios.post('http://localhost:5000/api/courses', course, {
+            await axios.post('http://localhost:5000/api/courses', course, {
                 auth: {
-                    username: emailAddress,
-                    password: password
+                    username: props.userData.emailAddress,
+                    password: props.userData.password
                 }
             })
             console.log('Course Created')
             history.push('/')
-        } catch(error) {
+        }   catch(error) {
             if(error.response.status === 500) {
                 setError500Status(true)
             } else {
@@ -59,11 +44,28 @@ function CreateCourse (props) {
                 console.log(error);
                 }
             }
+        }   catch (error) {
+            if(error.response) {
+                if (error.response.status === 500) {
+                setError500Status(true)
+                console.log(error500Status)
+                }   else { 
+                    if(error.response.status === 400) {
+                    setValidationErrors(error.response.data.errors)
+                    }
+                }   else {
+                    console.log(error.response)
+                }
+            }   else if (error.request) {
+                console.log(error.request)
+            }   else {
+                console.log(error);
+            }
         }
     };
 
     if (error500Status === true) {
-        return <Redirect to="/api/error" />
+        return <Redirect to="/error" />
     }
 
     return(
@@ -109,7 +111,7 @@ function CreateCourse (props) {
                             </textarea>
                         </div>
                     </div>
-                    <button className="button" type="submit" >Create Course</button><button className="button button-secondary"><a href="/">Cancel</a></button>
+                    <button className="button" type="submit" >Create Course</button><a className="button button-secondary" href="/">Cancel</a>
                 </form>
             </div>
     )

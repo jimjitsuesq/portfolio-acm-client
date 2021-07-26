@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory, Redirect } from 'react-router-dom';
 
-const UserSignOut = () => {
+function UserSignOut () {
     const [error500Status, setError500Status] = useState(false)
     let history = useHistory()
     try {
@@ -18,7 +18,7 @@ const UserSignOut = () => {
         }
     }
     if (error500Status === true) {
-        return <Redirect to="/api/error" />
+        return <Redirect to="/error" />
     } else {
         return (null)
     }

@@ -22,7 +22,7 @@ function UserSignUp () {
         console.log(user)
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/api/users', user)
+            await axios.post('http://localhost:5000/api/users', user)
             console.log('User Created')
             history.push('/')
         } catch(error) {
@@ -39,7 +39,7 @@ function UserSignUp () {
     };
 
     if (error500Status === true) {
-        return <Redirect to="/api/error" />
+        return <Redirect to="/error" />
     }
 
     return (
@@ -83,7 +83,7 @@ function UserSignUp () {
                         <button className="button" type="submit">Sign Up</button><button className="button button-secondary"> <a href='/'>Cancel</a></button>
                       </div>
                     </form>
-                    <p>Already have a user account? Click here to <a href="/api/signin">sign in</a>!</p>
+                    <p>Already have a user account? Click here to <a href="/signin">sign in</a>!</p>
                 </div>
     )
 }

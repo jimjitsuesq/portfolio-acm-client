@@ -4,16 +4,16 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { useHistory, Redirect } from 'react-router-dom';
 
-const CourseDetail = (props) => {
+function CourseDetail (props) {
     const [isLoading, setLoading] = useState(true);
     const [course, getCourse] = useState();
     const [materials, getMaterials] = useState();
-    const [materialsList, setMaterialsList] = useState()
     const [thisCourseUserId, setThisCourseUserId] = useState();
     const [noCourse, setNoCourse] = useState(false);
     const [error500Status, setError500Status] = useState(false)
     let { id } = useParams();
     let history = useHistory();
+
     const deleteCourse = async () => {
         try {
             await axios.delete(`http://localhost:5000/api/courses/${id}`, {
@@ -32,35 +32,36 @@ const CourseDetail = (props) => {
             }
         }
     }
-    const fetchCourse = async () => {
-        try {     
-            const response = await axios.get(`http://localhost:5000/api/courses/${id}`)
-            getCourse(response.data.course)
-            setThisCourseUserId(response.data.course.User.id)
-            getMaterials(response.data.course.materialsNeeded)
-            setLoading(false)
-        } catch (error) {
-            if(error.response.status === 500) {
-                setError500Status(true)
-            } else {
-                if(error.response.status === 404) {
-                    setNoCourse(true) 
+    
+    useEffect(() => {
+        const fetchCourse = async () => {
+            try {     
+                const response = await axios.get(`http://localhost:5000/api/courses/${id}`)
+                getCourse(response.data.course)
+                setThisCourseUserId(response.data.course.User.id)
+                getMaterials(response.data.course.materialsNeeded)
+                setLoading(false)
+            } catch (error) {
+                if(error.response.status === 500) {
+                    setError500Status(true)
                 } else {
-                    console.log(error);
+                    if(error.response.status === 404) {
+                        setNoCourse(true) 
+                    } else {
+                        console.log(error);
+                    }
                 }
             }
         }
-    }
-    useEffect(() => {
         fetchCourse()
-    }, []);
+    }, [id]);
         
     if (noCourse === true) {
         return <Redirect to="/notfound" />
     } 
     
     if (error500Status === true) {
-        return <Redirect to="/api/error" />
+        return <Redirect to="/error" />
     }
 
     if (isLoading) {

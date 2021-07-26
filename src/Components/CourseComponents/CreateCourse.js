@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router';
+import { useHistory, Redirect } from 'react-router';
 import ValidationErrors from '../ErrorComponents/ValidationErrors';
 
 function CreateCourse (props) {
@@ -11,7 +11,8 @@ function CreateCourse (props) {
     const [userId, setUserId] = useState()
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
-    const [validationErrors, setValidationErrors] = useState([])
+    const [validationErrors, setValidationErrors] = useState([]);
+    const [error500Status, setError500Status] = useState(false);
     const cookieValue = document.cookie.split('=')[1]
     let history = useHistory()
     const loggedInUser = localStorage.getItem('userInfo')
@@ -22,6 +23,7 @@ function CreateCourse (props) {
         setEmailAddress(foundUser.emailAddress);
         setPassword(foundUser.password)
     }, [])
+    
     const handleSubmit = async (e) => {
         const course = {
             title,
@@ -48,10 +50,22 @@ function CreateCourse (props) {
             console.log('Course Created')
             history.push('/')
         } catch(error) {
-            console.log(error);
-            setValidationErrors(error.response.data.errors)
+            if(error.response.status === 500) {
+                setError500Status(true)
+            } else {
+                if(error.response.status === 400) {
+                    setValidationErrors(error.response.data.errors) 
+                } else {
+                console.log(error);
+                }
+            }
         }
     };
+
+    if (error500Status === true) {
+        return <Redirect to="/api/error" />
+    }
+
     return(
         <div className="wrap">
                 <h2>Create Course</h2>

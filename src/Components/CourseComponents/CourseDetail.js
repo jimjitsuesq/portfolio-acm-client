@@ -11,18 +11,28 @@ const CourseDetail = (props) => {
     const [materialsList, setMaterialsList] = useState()
     const [thisCourseUserId, setThisCourseUserId] = useState();
     const [noCourse, setNoCourse] = useState(false);
+    const [error500Status, setError500Status] = useState(false)
     let { id } = useParams();
     let history = useHistory();
-    const deleteCourse = () => {
-        axios
-            .delete(`http://localhost:5000/api/courses/${id}`)
-            .then(() => console.log('Course Deleted'))
-            .then(() => {(window.location='/')})
-            .catch(err => {
-                console.error(err)
+    const deleteCourse = async () => {
+        try {
+            await axios.delete(`http://localhost:5000/api/courses/${id}`, {
+                auth: {
+                    username: props.userData.emailAddress,
+                    password: props.userData.password
+                }   
             })
+            console.log('Course Deleted')
+            history.push('/')
+        } catch (error) {
+            if(error.response.status === 500) {
+                setError500Status(true)
+            } else {
+                console.log(error)
+            }
+        }
     }
-    async function fetchCourse () {
+    const fetchCourse = async () => {
         try {     
             const response = await axios.get(`http://localhost:5000/api/courses/${id}`)
             getCourse(response.data.course)
@@ -30,68 +40,69 @@ const CourseDetail = (props) => {
             getMaterials(response.data.course.materialsNeeded)
             setLoading(false)
         } catch (error) {
-            setNoCourse(true)
-            console.log(error)
+            if(error.response.status === 500) {
+                setError500Status(true)
+            } else {
+                if(error.response.status === 404) {
+                    setNoCourse(true) 
+                } else {
+                    console.log(error);
+                }
+            }
         }
     }
     useEffect(() => {
         fetchCourse()
-        function splitter () {
-            let allMaterialsList
-            if(materials) {
-                const splitMaterials = materials.split('*')
-                allMaterialsList = splitMaterials.slice(1).map((material, index) => <li key={index}>{material}</li>)
-            } else {
-                allMaterialsList = 'None'
-            }
-            setMaterialsList(allMaterialsList)
-        }
-        splitter()
-        }, []);
-    if (noCourse===true) {
-        console.log('SO?')
+    }, []);
+        
+    if (noCourse === true) {
         return <Redirect to="/notfound" />
-    } else {
-        if (isLoading) {
-            return <div>Loading...</div>
-        } else {
-            return (
+    } 
+    
+    if (error500Status === true) {
+        return <Redirect to="/api/error" />
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    } 
+
+    return (
+        <>
+        <div className="actions--bar">
+            <div className="wrap">
+                {(props.userId === thisCourseUserId) &&
                 <>
-                <div className="actions--bar">
-                    <div className="wrap">
-                        {(props.userId === thisCourseUserId) &&
-                        <>
-                        <a className="button" href={`${course.id}/update`}>Update Course</a>
-                        <button className="button" onClick={deleteCourse}>Delete Course</button>
-                        </>
-                        }
-                        <a className="button button-secondary" href="/">Return to List</a>
+                <a className="button" href={`${course.id}/update`}>Update Course</a>
+                <button className="button" onClick={deleteCourse}>Delete Course</button>
+                </>
+                }
+                <a className="button button-secondary" href="/">Return to List</a>
+            </div>
+        </div>
+        <div className="wrap">
+            <h2>Course Detail</h2>
+            <form>
+                <div className="main--flex">
+                    <div>
+                        <h3 className="course--detail--title">Course</h3>
+                        <h4 className="course--name">{course.title}</h4>
+                        <p>By {course.User.firstName} {course.User.lastName}</p>
+                        <ReactMarkdown>{course.description}</ReactMarkdown>
+                    </div>
+                    <div>
+                        <h3 className="course--detail--title">Estimated Time</h3>
+                        <p>{course.estimatedTime}</p>
+
+                        <h3 className="course--detail--title">Materials Needed</h3>
+                            <ReactMarkdown className="course--detail--list">{materials}</ReactMarkdown>
                     </div>
                 </div>
-                <div className="wrap">
-                    <h2>Course Detail</h2>
-                    <form>
-                        <div className="main--flex">
-                            <div>
-                                <h3 className="course--detail--title">Course</h3>
-                                <h4 className="course--name">{course.title}</h4>
-                                <p>By {course.User.firstName} {course.User.lastName}</p>
-                                <ReactMarkdown>{course.description}</ReactMarkdown>
-                            </div>
-                            <div>
-                                <h3 className="course--detail--title">Estimated Time</h3>
-                                <p>{course.estimatedTime}</p>
-
-                                <h3 className="course--detail--title">Materials Needed</h3>
-                                    <ReactMarkdown className="course--detail--list">{materials}</ReactMarkdown>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                </>
-            )
-        }
-    }
+            </form>
+        </div>
+        </>
+    )
+    
 }
 
 export default CourseDetail;

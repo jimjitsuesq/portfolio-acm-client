@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useHistory, Redirect } from 'react-router-dom';
 
 import Course from './Course';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
-    // let allCourses;
+    const [error500Status, setError500Status] = useState(false)
     async function fetchCourses () {
         try {
             const response = await axios.get('http://localhost:5000/api/courses')
@@ -13,15 +14,22 @@ const Courses = () => {
             let allCourses = courseData.map(course => <Course courseId={course.id} key={course.id} courseTitle={course.title} />)
             setCourses(allCourses)
         } catch (error) {
-            // error => console.error(`Error: ${error}`);
+            if(error.response.status === 500) {
+                setError500Status(true)
+            } else {
             console.log(error)
+            }
         }
     }
     useEffect(() => {
         fetchCourses()
     }, []);
-    return(
 
+    if (error500Status === true) {
+        return <Redirect to="/api/error" />
+    } 
+    
+    return(
         <div className="wrap main--grid">
             {courses}
             <a className="course--module course--add--module" href="/api/courses/create">
@@ -32,7 +40,7 @@ const Courses = () => {
                 </span>
             </a>
         </div>
-    );
-  }
+    );  
+}
 
 export default Courses;

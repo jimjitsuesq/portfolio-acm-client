@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import ValidationErrors from '../ErrorComponents/ValidationErrors';
 
 function UserSignUp () {
@@ -8,8 +8,8 @@ function UserSignUp () {
     const [lastName, setLastName] = useState('')
     const [emailAddress, setEmailAddress] = useState('')
     const [password, setPassword] = useState('')
-    const [confirmedPassword, setConfirmedPassword] = useState('')
     const [validationErrors, setValidationErrors] = useState([])
+    const [error500Status, setError500Status] = useState(false)
     let history = useHistory()
 
     const handleSubmit = async (e) => {
@@ -26,10 +26,22 @@ function UserSignUp () {
             console.log('User Created')
             history.push('/')
         } catch(error) {
-            console.log(error.response.data.errors);
-            setValidationErrors(error.response.data.errors)
+            if(error.response.status === 500) {
+                setError500Status(true)
+            } else {
+                if(error.response.status === 400) {
+                    setValidationErrors(error.response.data.errors) 
+                } else {
+                console.log(error);
+                }
+            }
         }
     };
+
+    if (error500Status === true) {
+        return <Redirect to="/api/error" />
+    }
+
     return (
         <div className="form--centered">
                     <h2>Sign Up</h2>

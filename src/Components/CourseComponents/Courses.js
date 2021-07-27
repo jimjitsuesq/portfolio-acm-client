@@ -7,36 +7,36 @@ import Course from './Course';
  * 
  * @returns The home screen with a list of all courses
  */
-function Courses () {
+const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [error500Status, setError500Status] = useState(false)
-    async function fetchCourses () {
-        try {
-            const response = await axios.get('http://localhost:5000/api/courses')
-            let courseData = response.data.courses
-            let allCourses = courseData.map(course => <Course courseId={course.id} key={course.id} courseTitle={course.title} />)
-            setCourses(allCourses)
-        } catch (error) {
-            if(error.response) {
-                if (error.response.status === 500) {
-                setError500Status(true)
-                console.log(error500Status)
-                } else {
-                    console.log(error.response)
-                }
-            }   else if (error.request) {
-                console.log(error.request)
-            }   else {
-                console.log(error);
-            }
-        }
-    }
     /**
-     * Calls the fetchCourses function when the component mounts.
+     * Calls the fetchCourses function when the component mounts that retrieves
+     * all courses from the server.
      */
     useEffect(() => {
+        async function fetchCourses () {
+            try {
+                const response = await axios.get('http://localhost:5000/api/courses')
+                let courseData = response.data.courses
+                let allCourses = courseData.map(course => <Course courseId={course.id} key={course.id} courseTitle={course.title} />)
+                setCourses(allCourses)
+            } catch (error) {
+                if(error.response) {
+                    if (error.response.status === 500) {
+                    setError500Status(true)
+                    } else {
+                        console.log(error.response)
+                    }
+                }   else if (error.request) {
+                    console.log(error.request)
+                }   else {
+                    console.log(error);
+                }
+            }
+        }
         fetchCourses()
-    }, []);
+    }, [error500Status]);
 
     if (error500Status === true) {
         return <Redirect to="/error" />

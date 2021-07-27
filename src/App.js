@@ -77,7 +77,12 @@ function App() {
               />
               <Route 
                 path="/signup" 
-                component={UserSignUp} 
+                render={(props) =>  <UserSignUp 
+                                      setIsLoggedIn={setIsLoggedIn} 
+                                      setUserData={setUserData} 
+                                      {...props} 
+                                    />
+                } 
               />
               <Route 
                 path="/signout" 

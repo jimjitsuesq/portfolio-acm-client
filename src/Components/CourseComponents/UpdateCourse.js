@@ -106,7 +106,7 @@ function UpdateCourse (props) {
             }
         }
         fetchCourse()
-    }, [id]);
+    }, [id, error500Status]);
 /**
  * Logic that determines what component is loaded, depending on the user and
  * what is returned from the server.

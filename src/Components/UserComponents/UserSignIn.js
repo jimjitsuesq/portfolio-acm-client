@@ -15,9 +15,9 @@ function UserSignIn (props) {
     let location = useLocation()
     let history = useHistory()
     let lastLocation
-
+    console.log(lastLocation)
     if(location.state !== undefined) {
-        if(location.state.from.pathname !== '/signout' || '/signup') {
+        if(location.state.from.pathname !== '/signout') {
             lastLocation = (location.state.from.pathname) 
         } else {
         lastLocation = '/'

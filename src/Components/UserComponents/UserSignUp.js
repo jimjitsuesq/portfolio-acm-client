@@ -7,7 +7,7 @@ import ValidationErrors from '../ErrorComponents/ValidationErrors';
  * @returns A form used for a new user to sign up, or an error page if a
  * server error is thrown
  */
-function UserSignUp () {
+function UserSignUp (props) {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [emailAddress, setEmailAddress] = useState('')
@@ -31,7 +31,21 @@ function UserSignUp () {
         e.preventDefault();
         try {
             await axios.post('http://localhost:5000/api/users', user)
+            
             console.log('User Created')
+            const response = await axios.get('http://localhost:5000/api/users', {
+                auth: {
+                    username: emailAddress,
+                    password: password
+                }
+            })
+            console.log(response)
+            console.log('User Logged In')
+            const responseJSON = JSON.stringify(response.data.authenticatedUser)
+            console.log(responseJSON)
+            localStorage.setItem('userInfo', responseJSON)
+            props.setIsLoggedIn(true)
+            setLocalUser()
             history.push('/')
         } catch(error) {
             if(error.response.status === 500) {
@@ -45,7 +59,16 @@ function UserSignUp () {
             }
         }
     };
-
+/**
+ * Uses local storage to set the user information state of the component
+ */
+    async function setLocalUser () {
+        const loggedInUser = localStorage.getItem('userInfo')
+        if (loggedInUser !== null) {
+        const foundUser = JSON.parse(loggedInUser);
+        props.setUserData(foundUser);
+        }
+    }
     if (error500Status === true) {
         return <Redirect to="/error" />
     }

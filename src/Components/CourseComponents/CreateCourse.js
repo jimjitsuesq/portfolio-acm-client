@@ -8,7 +8,7 @@ import ValidationErrors from '../ErrorComponents/ValidationErrors';
  * user data
  * @returns A form that allows a logged-in user to create a new course
  */
-const CreateCourse = (props) => {
+function CreateCourse (props) {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [estimatedTime, setEstimatedTime] = useState('')
@@ -17,9 +17,11 @@ const CreateCourse = (props) => {
     const [validationErrors, setValidationErrors] = useState([]);
     const [error500Status, setError500Status] = useState(false);
     let history = useHistory()
-    if(userId === 0) {
+
+    if(userId !== props.userData.id) {
         setUserId(props.userData.id)
     }
+
 /** 
  * Handles the submission of data to create the new course.
  * 
@@ -32,6 +34,7 @@ const CreateCourse = (props) => {
             materialsNeeded,
             userId
         }
+        console.log(course)
         e.preventDefault();
         try {
             await axios.post('http://localhost:5000/api/courses', course, {

@@ -3,7 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import { useHistory, Redirect } from 'react-router-dom';
-
+/**
+ * 
+ * @param {varies} props Properties sent from the App component containing 
+ * user data
+ * @returns The details of a particular course
+ */
 function CourseDetail (props) {
     const [isLoading, setLoading] = useState(true);
     const [course, getCourse] = useState();
@@ -13,7 +18,9 @@ function CourseDetail (props) {
     const [error500Status, setError500Status] = useState(false)
     let { id } = useParams();
     let history = useHistory();
-
+    /**
+     * Function that allows a logged-in owner of a course to delete it
+     */
     const deleteCourse = async () => {
         try {
             await axios.delete(`http://localhost:5000/api/courses/${id}`, {
@@ -32,7 +39,9 @@ function CourseDetail (props) {
             }
         }
     }
-    
+    /**
+     * Function that loads course data when the component mounts
+     */
     useEffect(() => {
         const fetchCourse = async () => {
             try {     
@@ -55,7 +64,10 @@ function CourseDetail (props) {
         }
         fetchCourse()
     }, [id]);
-        
+/**
+ * Logic that determines what component is loaded, depending on the user and
+ * what is returned from the server.
+ */ 
     if (noCourse === true) {
         return <Redirect to="/notfound" />
     } 
@@ -103,7 +115,6 @@ function CourseDetail (props) {
         </div>
         </>
     )
-    
 }
 
 export default CourseDetail;

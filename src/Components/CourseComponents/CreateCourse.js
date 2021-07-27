@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory, Redirect } from 'react-router';
 import ValidationErrors from '../ErrorComponents/ValidationErrors';
-
-function CreateCourse (props) {
+/**
+ * 
+ * @param {varies} props Properties sent from the App component containing 
+ * user data
+ * @returns A form that allows a logged-in user to create a new course
+ */
+const CreateCourse = (props) => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [estimatedTime, setEstimatedTime] = useState('')
@@ -15,7 +20,10 @@ function CreateCourse (props) {
     if(userId === 0) {
         setUserId(props.userData.id)
     }
-
+/** 
+ * Handles the submission of data to create the new course.
+ * 
+ */
     const handleSubmit = async (e) => {
         const course = {
             title,
@@ -34,31 +42,21 @@ function CreateCourse (props) {
             })
             console.log('Course Created')
             history.push('/')
-        }   catch(error) {
-            if(error.response.status === 500) {
-                setError500Status(true)
-            } else {
-                if(error.response.status === 400) {
-                    setValidationErrors(error.response.data.errors) 
-                } else {
-                console.log(error);
-                }
-            }
         }   catch (error) {
             if(error.response) {
                 if (error.response.status === 500) {
-                setError500Status(true)
-                console.log(error500Status)
-                }   else { 
-                    if(error.response.status === 400) {
+                    setError500Status(true)
+                    console.log(error500Status)
+                }  
+                if (error.response.status === 400) {
                     setValidationErrors(error.response.data.errors)
-                    }
-                }   else {
-                    console.log(error.response)
                 }
-            }   else if (error.request) {
+            }  else {
+                    console.log(error.response)
+            }  
+            if (error.request) {
                 console.log(error.request)
-            }   else {
+            }  else {
                 console.log(error);
             }
         }

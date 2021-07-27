@@ -1,5 +1,9 @@
 import React from 'react';
-
+/**
+ * 
+ * @param {varies} props Props sent from the Courses component for rendering 
+ * @returns Each of the "buttons" representing each course on the home screen
+ */
 function Course (props) {
     return (
     <>

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory, Redirect } from 'react-router-dom';
-
+/**
+ * Component that signs a user out by clearing local storage
+ * @returns A redirect to the home page upon successful logout or an error page
+ */
 function UserSignOut () {
     const [error500Status, setError500Status] = useState(false)
     let history = useHistory()

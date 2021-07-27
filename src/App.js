@@ -16,12 +16,18 @@ import Forbidden from './Components/ErrorComponents/Forbidden';
 import UnhandledError from './Components/ErrorComponents/UnhandledError';
 
 axios.defaults.withCredentials = true;
-
+/**
+ * The "main" page for the app.  Handles all routing and sets and dispatches
+ * userData and logged in status.
+ * @returns The routes for all components.
+ */
 function App() {
   const [userData, setUserData] = useState('');
   const [userId, setUserId] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+/**
+ * Retrieves userData from localStorage when the component mounts
+ */
   useEffect(() => {
     if(localStorage.getItem('userInfo')) {
     const loggedInUser = localStorage.getItem('userInfo')

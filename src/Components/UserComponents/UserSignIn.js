@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
+/**
+ * Component that handles signing in a registered user either via link or after 
+ * redirect from a private route.
+ * @param {varies} props Passes properties from App.js React Router, as well as 
+ * The history used for redirect after successful sign in 
+ * @returns A form for a registered user to sign in with
+ */
 function UserSignIn (props) {
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
@@ -16,7 +23,10 @@ function UserSignIn (props) {
         lastLocation = '/'
         }
     }
-
+/**
+ * The actual function that signs in a user with a GET API call, sets the
+ * logged-in state to "true", and puts the user's data in local storage
+ */
     async function signIn () {
         try {
             const response = await axios.get('http://localhost:5000/api/users', {
@@ -46,7 +56,9 @@ function UserSignIn (props) {
             }
         }
     }
-
+/**
+ * Uses local storage to set the user information state of the component
+ */
     async function setLocalUser () {
         const loggedInUser = localStorage.getItem('userInfo')
         if (loggedInUser !== null) {
@@ -54,7 +66,10 @@ function UserSignIn (props) {
         props.setUserData(foundUser);
         }
     }
-
+/**
+ * Handles submission of user credentials to the server for validation
+ * @param {event} e
+ */
     const handleSubmit = (e) => {
         e.preventDefault()
         signIn()

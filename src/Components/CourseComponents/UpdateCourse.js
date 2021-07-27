@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Redirect, useHistory } from 'react-router-dom';
 import ValidationErrors from '../ErrorComponents/ValidationErrors';
-
+/**
+ * 
+ * @param {varies} props Properties sent from the App component containing 
+ * user data
+ * @returns A form that allows a logged-in owner of a course to update its data
+ */
 function UpdateCourse (props) {
     const [isLoading, setLoading] = useState(true);
     const [thisCourseUserId, setThisCourseUserId] = useState();
@@ -18,6 +23,12 @@ function UpdateCourse (props) {
     let { id } = useParams();
     let history = useHistory()
     let currentUser = props.userData.id
+
+/**
+ * Handles the submission of the updated form data to the server
+ * @param {event} e 
+ */
+
     const HandleSubmit = async (e) => {
         const course = {
             title,
@@ -57,7 +68,10 @@ function UpdateCourse (props) {
             }
         }
     }
-
+/**
+ * Prepopulates the UpdateCourse form with course data from the server when the
+ * component mounts
+ */
     useEffect(() => {
         const fetchCourse = async () => {
             try {
@@ -93,7 +107,10 @@ function UpdateCourse (props) {
         }
         fetchCourse()
     }, [id]);
-
+/**
+ * Logic that determines what component is loaded, depending on the user and
+ * what is returned from the server.
+ */
     if (noCourse===true) {
         return <Redirect to="/notfound" />
     }

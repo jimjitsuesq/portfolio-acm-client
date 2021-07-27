@@ -1,5 +1,8 @@
 import React from 'react';
-
+/**
+ * 
+ * @returns An error page if an unhandled server error occurs
+ */
 function UnhandledError () {
     return (
         <div className="wrap">

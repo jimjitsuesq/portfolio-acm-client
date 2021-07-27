@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory, Redirect } from 'react-router-dom';
 import ValidationErrors from '../ErrorComponents/ValidationErrors';
-
+/**
+ * Component where a new user can sign up.
+ * @returns A form used for a new user to sign up, or an error page if a
+ * server error is thrown
+ */
 function UserSignUp () {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -11,7 +15,11 @@ function UserSignUp () {
     const [validationErrors, setValidationErrors] = useState([])
     const [error500Status, setError500Status] = useState(false)
     let history = useHistory()
-
+/**
+ * Handles submission of the user signup form, setting errors and finally
+ * redirecting back to the home page after signup.
+ * @param {event} e 
+ */
     const handleSubmit = async (e) => {
         const user = {
             firstName,

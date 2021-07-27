@@ -1,6 +1,11 @@
 import React from 'react';
 import { useHistory, Link } from 'react-router-dom';
-
+/**
+ * 
+ * @param {varies} props Properties sent by App component containing the
+ * isLoggedIn status of the user and userData 
+ * @returns Sign in/up links or a logged in user's name and sign out link.
+ */
 function Header (props) {
     let history = useHistory()
     if(props.props.isLoggedIn === true) {

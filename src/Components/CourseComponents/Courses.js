@@ -3,7 +3,10 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
 import Course from './Course';
-
+/**
+ * 
+ * @returns The home screen with a list of all courses
+ */
 function Courses () {
     const [courses, setCourses] = useState([]);
     const [error500Status, setError500Status] = useState(false)
@@ -28,6 +31,9 @@ function Courses () {
             }
         }
     }
+    /**
+     * Calls the fetchCourses function when the component mounts.
+     */
     useEffect(() => {
         fetchCourses()
     }, []);

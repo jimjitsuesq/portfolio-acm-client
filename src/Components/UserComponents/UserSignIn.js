@@ -29,11 +29,11 @@ function UserSignIn (props) {
  */
     async function signIn () {
         try {
-            const response = await axios.get('http://localhost:5000/api/users', {
+            const response = await axios.get('https://portfolio-acm-server.wn.r.appspot.com/api/users', {
                 auth: {
                     username: emailAddress,
                     password: password
-                }
+                },
             })
             const responseJSON = JSON.stringify(response.data.authenticatedUser)
             localStorage.setItem('userInfo', responseJSON)
@@ -62,8 +62,8 @@ function UserSignIn (props) {
     async function setLocalUser () {
         const loggedInUser = localStorage.getItem('userInfo')
         if (loggedInUser !== null) {
-        const foundUser = JSON.parse(loggedInUser);
-        props.setUserData(foundUser);
+            const foundUser = JSON.parse(loggedInUser);
+            props.setUserData(foundUser);
         }
     }
 /**

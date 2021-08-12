@@ -17,7 +17,7 @@ const Courses = () => {
     useEffect(() => {
         async function fetchCourses () {
             try {
-                const response = await axios.get('http://localhost:5000/api/courses')
+                const response = await axios.get('https://portfolio-acm-server.wn.r.appspot.com/api/courses')
                 let courseData = response.data.courses
                 let allCourses = courseData.map(course => <Course courseId={course.id} key={course.id} courseTitle={course.title} />)
                 setCourses(allCourses)

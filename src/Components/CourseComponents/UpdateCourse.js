@@ -39,7 +39,7 @@ function UpdateCourse (props) {
         }
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:5000/api/courses/${id}`, course, {
+            await axios.put(`https://portfolio-acm-server.wn.r.appspot.com/api/courses/${id}`, course, {
                 auth: {
                     username: props.userData.emailAddress,
                     password: props.userData.password
@@ -75,7 +75,7 @@ function UpdateCourse (props) {
     useEffect(() => {
         const fetchCourse = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/courses/${id}`)
+                const response = await axios.get(`https://portfolio-acm-server.wn.r.appspot.com/api/courses/${id}`)
                 getCourse(response.data.course)
                 setThisCourseUserId(response.data.course.userId)
                 setTitle(response.data.course.title)

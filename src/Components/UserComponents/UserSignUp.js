@@ -30,10 +30,10 @@ function UserSignUp (props) {
         console.log(user)
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/users', user)
+            await axios.post('https://portfolio-acm-server.wn.r.appspot.com/api/users', user)
             
             console.log('User Created')
-            const response = await axios.get('http://localhost:5000/api/users', {
+            const response = await axios.get('https://portfolio-acm-server.wn.r.appspot.com/api/users', {
                 auth: {
                     username: emailAddress,
                     password: password

@@ -10,6 +10,19 @@ import Course from './Course';
 const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [error500Status, setError500Status] = useState(false)
+
+    axios.interceptors.request.use(request => {
+        // replace console with our logger of choice
+        console.log('Starting Request', JSON.stringify(request, null, 2))
+        return request;
+    })
+    
+    axios.interceptors.response.use(res => {
+        console.log(res.data.json);
+        // Important: response interceptors **must** return the response.
+        return res;
+      });
+      
     /**
      * Calls the fetchCourses function when the component mounts that retrieves
      * all courses from the server.
@@ -17,11 +30,17 @@ const Courses = () => {
     useEffect(() => {
         async function fetchCourses () {
             try {
-                const response = await axios.get('https://portfolio-acm-server.wn.r.appspot.com/api/courses')
+                const response = await axios.get('https://portfolio-acm-server2.wn.r.appspot.com/api/courses', {
+                    headers: {
+                        "Access-Control-Allow-Origin": "*"
+                    }
+                })
+                console.log(response)
                 let courseData = response.data.courses
                 let allCourses = courseData.map(course => <Course courseId={course.id} key={course.id} courseTitle={course.title} />)
                 setCourses(allCourses)
             } catch (error) {
+                console.log(error)
                 if(error.response) {
                     if (error.response.status === 500) {
                     setError500Status(true)
@@ -49,7 +68,7 @@ const Courses = () => {
                 <span className="course--add--title">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                     viewBox="0 0 13 13" className="add"><polygon points="7,6 7,0 6,0 6,6 0,6 0,7 6,7 6,13 7,13 7,7 13,7 13,6 "></polygon></svg>
-                    New Course
+                    New Course?
                 </span>
             </a>
         </div>

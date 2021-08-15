@@ -23,7 +23,7 @@ function CourseDetail (props) {
      */
     const deleteCourse = async () => {
         try {
-            await axios.delete(`https://portfolio-acm-server2.wn.r.appspot.com/api/courses/${id}`, {
+            await axios.delete(`https://ecstatic-mirzakhani-746a17.netlify.app/api/courses/${id}`, {
                 auth: {
                     username: props.userData.emailAddress,
                     password: props.userData.password
@@ -45,7 +45,7 @@ function CourseDetail (props) {
     useEffect(() => {
         const fetchCourse = async () => {
             try {     
-                const response = await axios.get(`https://portfolio-acm-server2.wn.r.appspot.com/api/courses/${id}`)
+                const response = await axios.get(`https://ecstatic-mirzakhani-746a17.netlify.app/api/courses/${id}`)
                 getCourse(response.data.course)
                 setThisCourseUserId(response.data.course.User.id)
                 getMaterials(response.data.course.materialsNeeded)

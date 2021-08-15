@@ -23,13 +23,14 @@ function UserSignIn (props) {
         lastLocation = '/'
         }
     }
+    
 /**
  * The actual function that signs in a user with a GET API call, sets the
  * logged-in state to "true", and puts the user's data in local storage
  */
     async function signIn () {
         try {
-            const response = await axios.get('https://portfolio-acm-server2.wn.r.appspot.com/api/users', {
+            const response = await axios.get('https://ecstatic-mirzakhani-746a17.netlify.app/api/users', {
                 auth: {
                     username: emailAddress,
                     password: password
@@ -56,6 +57,7 @@ function UserSignIn (props) {
             }
         }
     }
+
 /**
  * Uses local storage to set the user information state of the component
  */
@@ -66,6 +68,7 @@ function UserSignIn (props) {
             props.setUserData(foundUser);
         }
     }
+
 /**
  * Handles submission of user credentials to the server for validation
  * @param {event} e

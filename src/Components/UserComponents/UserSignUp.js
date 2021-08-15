@@ -30,10 +30,10 @@ function UserSignUp (props) {
         console.log(user)
         e.preventDefault();
         try {
-            await axios.post('https://portfolio-acm-server2.wn.r.appspot.com/api/users', user)
+            await axios.post('https://ecstatic-mirzakhani-746a17.netlify.app/api/users', user)
             
             console.log('User Created')
-            const response = await axios.get('https://portfolio-acm-server2.wn.r.appspot.com/api/users', {
+            const response = await axios.get('https://ecstatic-mirzakhani-746a17.netlify.app/api/users', {
                 auth: {
                     username: emailAddress,
                     password: password

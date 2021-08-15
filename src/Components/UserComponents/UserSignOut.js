@@ -9,7 +9,7 @@ function UserSignOut () {
     const [error500Status, setError500Status] = useState(false)
     let history = useHistory()
     try {
-        axios.get(`https://portfolio-acm-server2.wn.r.appspot.com/api/signout`)
+        axios.get(`https://ecstatic-mirzakhani-746a17.netlify.app/api/signout`)
         localStorage.clear()
         console.log('User Signed Out')
         history.push('/')

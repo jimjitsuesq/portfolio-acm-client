@@ -10,18 +10,6 @@ import Course from './Course';
 const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [error500Status, setError500Status] = useState(false)
-
-    axios.interceptors.request.use(request => {
-        // replace console with our logger of choice
-        console.log('Starting Request', JSON.stringify(request, null, 2))
-        return request;
-    })
-    
-    axios.interceptors.response.use(res => {
-        console.log(res.data.json);
-        // Important: response interceptors **must** return the response.
-        return res;
-      });
       
     /**
      * Calls the fetchCourses function when the component mounts that retrieves
@@ -30,12 +18,7 @@ const Courses = () => {
     useEffect(() => {
         async function fetchCourses () {
             try {
-                const response = await axios.get('https://portfolio-acm-server2.wn.r.appspot.com/api/courses', {
-                    headers: {
-                        "Access-Control-Allow-Origin": "*"
-                    }
-                })
-                console.log(response)
+                const response = await axios.get('https://ecstatic-mirzakhani-746a17.netlify.app/api/courses')
                 let courseData = response.data.courses
                 let allCourses = courseData.map(course => <Course courseId={course.id} key={course.id} courseTitle={course.title} />)
                 setCourses(allCourses)

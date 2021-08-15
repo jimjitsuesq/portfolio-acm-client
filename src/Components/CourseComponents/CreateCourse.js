@@ -37,7 +37,7 @@ function CreateCourse (props) {
         console.log(course)
         e.preventDefault();
         try {
-            await axios.post('https://portfolio-acm-server2.wn.r.appspot.com/api/courses', course, {
+            await axios.post('https://ecstatic-mirzakhani-746a17.netlify.app/api/courses', course, {
                 auth: {
                     username: props.userData.emailAddress,
                     password: props.userData.password

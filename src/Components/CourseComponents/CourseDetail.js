@@ -97,13 +97,15 @@ function CourseDetail (props) {
             <h2>Course Detail</h2>
             <form>
                 <div className="main--flex">
+                <div className="course-description-div">
                     <div>
                         <h3 className="course--detail--title">Course</h3>
                         <h4 className="course--name">{course.title}</h4>
                         <p>By {course.User.firstName} {course.User.lastName}</p>
                         <ReactMarkdown>{course.description}</ReactMarkdown>
                     </div>
-                    <div>
+                </div>
+                    <div className="course-detail-div">
                         <h3 className="course--detail--title">Estimated Time</h3>
                         <p>{course.estimatedTime}</p>
 

@@ -126,6 +126,7 @@ function UpdateCourse (props) {
     if (currentUser === thisCourseUserId) {
         return (
             <div className="wrap">
+                <div className="course-div">
                     <h2>Update Course</h2>
                         {(validationErrors.length > 0) && <ValidationErrors validationErrors={validationErrors}/>}
                     <form onSubmit={HandleSubmit}>
@@ -171,6 +172,7 @@ function UpdateCourse (props) {
                         <button className="button" type="submit" onClick={HandleSubmit}>Update Course</button><button className="button button-secondary"><a href={`/courses/${course.id}`}>Cancel</a></button>
                     </form>
                 </div>
+            </div>
         )
     } else {
         return <Redirect to="/forbidden" />

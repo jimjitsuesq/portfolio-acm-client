@@ -75,6 +75,7 @@ function UserSignUp (props) {
 
     return (
         <div className="form--centered">
+            <div className="sign-up-div">
                     <h2>Sign Up</h2>
                         {(validationErrors.length > 0) && <ValidationErrors validationErrors={validationErrors}/>}
                     <form onSubmit={handleSubmit}>
@@ -116,6 +117,7 @@ function UserSignUp (props) {
                     </form>
                     <p>Already have a user account? Click here to <a href="/signin">sign in</a>!</p>
                 </div>
+            </div>
     )
 }
 

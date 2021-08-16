@@ -80,6 +80,7 @@ function UserSignIn (props) {
 
     return (
         <div className="form--centered">
+            <div className="sign-in-div">
                 <h2>Sign In</h2>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="emailAddress">Email Address</label>
@@ -101,6 +102,7 @@ function UserSignIn (props) {
                     <button className="button" type="submit">Sign In</button><button className="button button-secondary"> <a href='/'>Cancel</a></button>
                 </form>
                 <p>Don't have a user account? Click here to <a href="signup">sign up</a>!</p> 
+            </div>        
         </div>
     )
 }

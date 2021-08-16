@@ -71,6 +71,7 @@ function CreateCourse (props) {
 
     return(
         <div className="wrap">
+            <div className="course-div">
                 <h2>Create Course</h2>
                     {(validationErrors.length > 0) && <ValidationErrors validationErrors={validationErrors}/>}
                 <form onSubmit={handleSubmit}>
@@ -115,6 +116,7 @@ function CreateCourse (props) {
                     <button className="button" type="submit" >Create Course</button><a className="button button-secondary" href="/">Cancel</a>
                 </form>
             </div>
+        </div>
     )
 }
 

@@ -18,7 +18,7 @@ const Courses = () => {
     useEffect(() => {
         async function fetchCourses () {
             try {
-                const response = await axios.get('https://ecstatic-mirzakhani-746a17.netlify.app/api/courses')
+                const response = await axios.get('https://portfolio-acm-client.netlify.app/api/courses')
                 let courseData = response.data.courses
                 let allCourses = courseData.map(course => <Course courseId={course.id} key={course.id} courseTitle={course.title} />)
                 setCourses(allCourses)

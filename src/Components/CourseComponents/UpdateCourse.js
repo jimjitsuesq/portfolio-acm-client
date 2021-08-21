@@ -39,7 +39,7 @@ function UpdateCourse (props) {
         }
         e.preventDefault();
         try {
-            await axios.put(`https://ecstatic-mirzakhani-746a17.netlify.app/api/courses/${id}`, course, {
+            await axios.put(`https://portfolio-acm-client.netlify.app/courses/${id}`, course, {
                 auth: {
                     username: props.userData.emailAddress,
                     password: props.userData.password
@@ -75,7 +75,7 @@ function UpdateCourse (props) {
     useEffect(() => {
         const fetchCourse = async () => {
             try {
-                const response = await axios.get(`https://ecstatic-mirzakhani-746a17.netlify.app/api/courses/${id}`)
+                const response = await axios.get(`https://portfolio-acm-client.netlify.app/courses/${id}`)
                 getCourse(response.data.course)
                 setThisCourseUserId(response.data.course.userId)
                 setTitle(response.data.course.title)

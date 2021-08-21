@@ -30,7 +30,7 @@ function UserSignIn (props) {
  */
     async function signIn () {
         try {
-            const response = await axios.get('https://ecstatic-mirzakhani-746a17.netlify.app/api/users', {
+            const response = await axios.get('https://portfolio-acm-client.netlify.app/api/users', {
                 auth: {
                     username: emailAddress,
                     password: password
